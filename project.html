@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة وتحليل نتائج الطلاب</title>
+    <style>
+       /* تنسيق عام للصفحة والخلفية */
+body {
+    /* استخدام خطوط النظام (System Fonts) - لا تحتاج إنترنت */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* تصميم الصندوق الزجاجي */
+.container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    width: 90%;
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* تنسيق العنوان الرئيسي */
+h1 {
+    font-size: 36px;
+    font-weight: 700; /* خط عريض */
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+/* تنسيق الفقرات النصية */
+p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    margin: 15px 0;
+    color: #f0f0f0;
+}
+
+/* إضافة لمسة جمالية لكلمة Console */
+.highlight {
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* حركة الظهور */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    </style>
+</head>
+<body>
+    <center>
+    <h1>Student Results Management and Analysis System</h1>
+    <p>To view the result, please check the console.</p>
+    <p>To open the console, right-click anywhere on the browser page, select Inspect, then choose Console from the menu that appears.</p>
+    </center>
+   <script>
+    const pass_mark=50;
+    const min_attendance=75;
+    class Student{
+        constructor(id,name,grades,attendance){
+            this.id=id;
+            this.name=name;
+            this.grades=grades;
+            this.attendance=attendance;
+
+        }
+        get_avg(){
+            const totalgrades=this.grades.reduce((sum,s)=>sum+s,0);
+            let average=0;
+            if(this.grades.length>0){
+                average=totalgrades/this.grades.length;
+            }
+            return average;
+        }
+        getgrade(average){
+            if(average>=90)
+            return "A";
+            else if(average>=85)
+            return "B";
+            else if(average>=75)
+            return "C";
+            else if(average>=60)
+            return "D";
+            else if(average>=50)
+            return "E";
+            else
+            return "F";
+        }
+        getResult(){
+            if(this.get_avg()>=pass_mark && this.attendance>=min_attendance){
+                return "PASS(ناجح)";
+            }
+            else{
+                return "NEED REVIEW (يحتاج مراجعه)";
+            }
+        }
+    }
+    const s1=new Student(1,"Nour",[99,100,98],95);
+    const s2=new Student(2,"Asmaa",[40,49,50],70);
+    const s3=new Student(3,"Ali",[50,60,42],75);
+    const s4=new Student(4,"Ahmed",[50,42,40],60);
+    const studentsList=[s1,s2,s3,s4];
+    const strugglingstudents=studentsList.filter(student=>student.get_avg()>=40 && student.get_avg()<=49);
+    const upgradedgrade=strugglingstudents.map(student=>student.get_avg()+5);
+    const totalupgrades=upgradedgrade.reduce((sum,grade)=>sum+grade,0);
+    let upgrade_average=0;
+    if(strugglingstudents.length>0)
+    upgrade_average=totalupgrades/strugglingstudents.length;
+   //report
+   for (let i = 0; i < studentsList.length; i++) {
+    console.log(`الاسم: ${studentsList[i].name}`);
+    console.log(`المتوسط: ${studentsList[i].get_avg()}`);
+    console.log(`التقدير: ${studentsList[i].getgrade(studentsList[i].get_avg())}`);
+    console.log(`النتيجة: ${studentsList[i].getResult()}`);
+    console.log("--------------------------");
+}
+   console.log("الطلاب المتعثرون:");
+   console.log(strugglingstudents);
+   console.log(`متوسط الطلاب المتعثرون بعد الرأفه: ${upgrade_average}`)
+   </script> 
+</body>
+</html>
